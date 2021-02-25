@@ -2,7 +2,7 @@ require('colors');
 
 /**
  * _listado
- *    { uuid-00000-000-000000-00000 : {id:12, desc:'xxx', competadoen:fecha} }
+ *    { uuid-00000-000-000000-00000 : {id:12, desc:'xxx', completadoen:fecha} }
  * 
  */
 
@@ -56,7 +56,7 @@ class Tareas {
 
       tareas.map( (tarea, index) => {
          aNumber = (index+1).toString();      
-         tarea.competadoEn === null ? status = 'Pendiente'.brightRed : status = 'Completada'.brightGreen;
+         tarea.completadoEn === null ? status = 'Pendiente'.brightRed : status = 'Completada'.brightGreen;
          // console.log(number);
          tareaFormateada += `${aNumber.brightGreen+'.'.brightGreen} ${tarea.desc}  ::  ${status}\n`;
       });
@@ -74,10 +74,10 @@ class Tareas {
          // Se muestran solo las copletadas
          contador = 1;
          tareas.map( (tarea) => {
-            if (tarea.competadoEn !== null) {
+            if (tarea.completadoEn !== null) {
                aNumber = (contador).toString();                     
                
-               console.log(`${aNumber.brightGreen+'.'.brightGreen} ${tarea.desc}  ::  ${tarea.competadoEn}`);     
+               console.log(`${aNumber.brightGreen+'.'.brightGreen} ${tarea.desc}  ::  ${tarea.completadoEn.brightGreen}`);     
                contador++;
             }            
          });           
@@ -85,9 +85,9 @@ class Tareas {
          // Se muestran solo las pendientes
          contador = 1;
          tareas.map( (tarea, index) => {
-            if (tarea.competadoEn === null) {
+            if (tarea.completadoEn === null) {
                aNumber = (contador).toString();      
-               tarea.competadoEn === null ? status = 'Pendiente'.brightRed : status = 'Completada'.brightGreen;
+               tarea.completadoEn === null ? status = 'Pendiente'.brightRed : status = 'Completada'.brightGreen;
                
                console.log(`${aNumber.brightGreen+'.'.brightGreen} ${tarea.desc}  ::  ${status}`);     
                contador++;
@@ -96,7 +96,29 @@ class Tareas {
       }
    }
 
+   toggleCompletadas ( ids = [] ) {
 
+      ids.forEach( id => {
+
+         // primero extraemos la tarea
+         const tarea = this._listado[id];
+         if ( !tarea.completadoEn ) {
+            tarea.completadoEn = new Date().toISOString();
+         }
+      })
+
+      this.listadoArr.forEach( tarea => {
+
+         if( !ids.includes(tarea.id) ) {
+            this._listado[tarea.id].completadoEn = null;
+            // Tabien se puede ahcer de esta forma separando
+            // const tarea = this._listado[tarea.id];
+            // tarea.completadoEn = null;
+
+         }
+      });
+
+   }
 
 }
 
